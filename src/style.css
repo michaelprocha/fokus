@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@theme {
+    --font-montserrat: "Montserrat", sans-serif;
+    --font-unbounded: "Unbounded", sans-serif;
+
+    --text-4xl: 4.3rem;
+    --text-3xl: 2.986rem;
+    --text-2xl: 2.074rem;
+    --text-xl: 1.728rem;
+    --text-l: 1.44rem;
+    --text-m: 1.2rem;
+    --text-base: 1rem;
+    --text-s: 0.833rem; 
+    --text-xs: 0.694rem;
+
+    --color-focus-mode: linear-gradient(180deg,rgba(139, 31, 248, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+    --color-short-rest: linear-gradient(180deg,rgba(15, 114, 92, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+    --color-long-rest: linear-gradient(180deg,rgba(24, 117, 233, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+    --color-deep-blue: #01080E;
+    --color-medium-blue: #041832;
+    --color-royal-blue: #144480;
+    --color-complementary1: linear-gradient(180deg,rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
+    --color-complementary2: #B872FF;
+    --color-complementary3: rgba(20, 68, 128, 0.3);
+    --color-pending: rgba(255, 255, 255, 0.5);
+    --color-completed: rgba(0, 244, 191, 0.4);
+    --color-checked: rgba(2, 205, 161, 1);
+}
