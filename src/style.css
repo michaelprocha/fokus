@@ -47,12 +47,12 @@
     }
 
     .cancel{
-        @apply max-w32 w-full h10 bg-transparent;
+        @apply max-w-32 w-full h-10 bg-transparent;
     }
     
     /* does not use button class */
     .changeMode{
-        @apply bg-royal-blue roundend-lg max-w-40 w-full h-11 flex items-center justify-center;
+        @apply bg-royal-blue rounded-lg max-w-40 w-full h-11 flex items-center justify-center;
     }
 
     .switch{
