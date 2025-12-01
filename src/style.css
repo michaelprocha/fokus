@@ -1,83 +1,117 @@
 @import "tailwindcss";
 
 @theme {
-    --font-montserrat: "Montserrat", sans-serif;
-    --font-unbounded: "Unbounded", sans-serif;
+	--font-montserrat: "Montserrat", sans-serif;
+	--font-unbounded: "Unbounded", sans-serif;
 
-    --text-4xl: 4.3rem;
-    --text-3xl: 2.986rem;
-    --text-2xl: 2.074rem;
-    --text-xl: 1.728rem;
-    --text-l: 1.44rem;
-    --text-m: 1.2rem;
-    --text-base: 1rem;
-    --text-s: 0.833rem; 
-    --text-xs: 0.694rem;
+	--text-4xl: 4.3rem;
+	--text-3xl: 2.986rem;
+	--text-2xl: 2.074rem;
+	--text-xl: 1.728rem;
+	--text-l: 1.44rem;
+	--text-m: 1.2rem;
+	--text-base: 1rem;
+	--text-s: 0.833rem;
+	--text-xs: 0.694rem;
 
-    --color-focus-mode: linear-gradient(180deg,rgba(139, 31, 248, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
-    --color-short-rest: linear-gradient(180deg,rgba(15, 114, 92, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
-    --color-long-rest: linear-gradient(180deg,rgba(24, 117, 233, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
-    --color-deep-blue: #01080E;
-    --color-medium-blue: #041832;
-    --color-royal-blue: #144480;
-    --color-complementary1: linear-gradient(180deg,rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
-    --color-complementary2: #B872FF;
-    --color-complementary3: rgba(20, 68, 128, 0.3);
-    --color-pending: rgba(255, 255, 255, 0.5);
-    --color-completed: rgba(0, 244, 191, 0.4);
-    --color-checked: rgba(2, 205, 161, 1);
+	--color-focus-mode: linear-gradient(180deg, rgba(139, 31, 248, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--color-short-rest: linear-gradient(180deg, rgba(15, 114, 92, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--color-long-rest: linear-gradient(180deg, rgba(24, 117, 233, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--color-deep-blue: #01080e;
+	--color-medium-blue: #041832;
+	--color-royal-blue: #144480;
+	--color-complementary1: linear-gradient(180deg, rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
+	--color-complementary2: #b872ff;
+	--color-complementary3: rgba(20, 68, 128, 0.3);
+	--color-pending: rgba(255, 255, 255, 0.5);
+	--color-completed: rgba(0, 244, 191, 0.4);
+	--color-checked: rgba(2, 205, 161, 1);
+}
+
+@layer base {
+	h1 {
+		@apply font-unbounded text-4xl;
+	}
+
+	h2 {
+		@apply font-unbounded text-3xl;
+	}
+
+	h3 {
+		@apply font-unbounded text-2xl;
+	}
+
+	h4 {
+		@apply font-unbounded text-xl;
+	}
+
+	h5 {
+		@apply font-unbounded text-l;
+	}
+
+	h6 {
+		@apply font-unbounded text-m;
+	}
+
+	p,
+	a,
+	button,
+	label,
+	input {
+		@apply font-montserrat text-base;
+	}
 }
 
 @layer components {
-    .button{
-        @apply flex justify-center items-center rounded-4xl;
-    }
+	.button {
+		@apply flex justify-center items-center rounded-4xl;
+	}
 
-    /* uses button class */
-    .play{
-        @apply max-w-45 w-full h-10 bg-complementary1 gap-2;
-    }
+	/* uses button class */
+	.play {
+		@apply max-w-45 w-full h-10 bg-complementary1 gap-2;
+	}
 
-    .addTask{
-        @apply max-w-147 w-full h-16 bg-transparent gap-0.5;
-    }
+	.addTask {
+		@apply max-w-147 w-full h-16 bg-transparent gap-0.5;
+	}
 
-    .save{
-        @apply max-w-29 w-full h-10 bg-deep-blue;
-    }
+	.save {
+		@apply max-w-29 w-full h-10 bg-deep-blue;
+	}
 
-    .cancel{
-        @apply max-w-32 w-full h-10 bg-transparent;
-    }
-    
-    /* does not use button class */
-    .changeMode{
-        @apply bg-royal-blue rounded-lg max-w-40 w-full h-11 flex items-center justify-center;
-    }
+	.cancel {
+		@apply max-w-32 w-full h-10 bg-transparent;
+	}
 
-    .switch{
-        @apply bg-complementary2 rounded-3xl max-w-15 w-full h-8 flex items-center;
-    }
+	/* does not use button class */
+	.changeMode {
+		@apply bg-royal-blue rounded-lg max-w-40 w-full h-11 flex items-center justify-center;
+	}
 
-    /* tasks */
-    .task{
-        @apply max-w-147 w-full h-16 flex justify-between items-center;
-    }
+	.switch {
+		@apply bg-complementary2 rounded-3xl max-w-15 w-full h-8 flex items-center;
+	}
 
-    .completed{
-        @apply bg-completed;
-    }
+	/* tasks */
+	.task {
+		@apply max-w-147 w-full h-16 flex justify-between items-center;
+	}
 
-    .peding{
-        @apply bg-pending;
-    }
+	.completed {
+		@apply bg-completed;
+	}
 
-    .edit{
-        @apply bg-pending flex flex-col gap-8 items-center max-w-147 w-full;
-    }
+	.peding {
+		@apply bg-pending;
+	}
 
-    /* timer */
-    .timer{
-        @apply max-w-147 w-full h-81 md:h-97.5 flex flex-col items-center gap-8 bg-complementary3 border-royal-blue border-2 border-solid rounded-4xl;
-    }
+	.edit {
+		@apply bg-pending flex flex-col gap-8 items-center max-w-147 w-full;
+	}
+
+	/* timer */
+	.timer {
+		@apply max-w-147 w-full h-81 md:h-97.5 flex flex-col items-center gap-8 bg-complementary3 border-royal-blue border-2 border-solid rounded-4xl;
+	}
 }
