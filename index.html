@@ -12,93 +12,92 @@
 		/>
 		<title>fokus</title>
 	</head>
-	<body>
+	<body class="bg-focus-mode">
 		<header>
-			<div>
+			<div class="py-10 max-w-300 flex justify-center items-center">
 				<img src="/images/headerFokus.png" alt="Fokus" />
 			</div>
 		</header>
 		<main>
-			<div>
-				<section>
-					<p>Otimize sua produtividade,<span>mergulhe no que importa</span></p>
-					<img src="/images/fokus.png" aria-hidden="true" />
+			<div class="px-2 flex flex-col gap-10 items-center">
+				<section class="flex flex-col items-center gap-6">
+					<h1 class="font-light">
+						Otimize sua produtividade,<span class="font-normal inline-block">mergulhe no que importa</span>
+					</h1>
+					<img class="w-58" src="/images/fokus.png" aria-hidden="true" />
 				</section>
-				<section>
-					<div>
-						<button>Foco</button>
-						<button>Descanso curto</button>
-						<button>Descanso longo</button>
+				<section class="timer">
+					<div class="flex gap-2">
+						<button id="focus" class="mode selected-mode">Foco</button>
+						<button id="short-rest" class="mode">Descanso curto</button>
+						<button id="long-rest" class="mode">Descanso longo</button>
 					</div>
-					<p>25:00</p>
-					<div>
-						<div>
-							<input type="checkbox" name="" id="">
-							<div>
-								<div>
-	
-								</div>
-							</div>
-						</div>
+					<p id="timer" class="text-3xl font-bold tracking-wider">25:00</p>
+					<div class="flex items-center gap-4">
+						<button id="switch" class="bg-medium-blue music">
+							<div class="bg-white rounded-3xl w-6 h-6"></div>
+						</button>
 						<p>Música</p>
 					</div>
-					<button>
-						<img src="/images/icons/playArrow.svg" alt="">
+					<button class="button play">
+						<img src="/images/icons/playArrow.svg" alt="" />
 						Começar
 					</button>
 				</section>
 				<section>
-					<h2>Lista de tarefas:</h2>
-					<ul>
-						<li>
-							<div>
-								<button type="button">
-									<img src="/images/icons/checkGreen.svg" alt="">
+					<h2 class="text-2xl text-center mb-6">Lista de tarefas:</h2>
+					<ul class="flex flex-col gap-2 justify-center items-center">
+						<li data-id="1" class="task completed">
+							<div class="flex gap-4">
+								<button data-button="completed" class="cursor-pointer" type="button">
+									<img src="/images/icons/checkGreen.svg" alt="" />
 								</button>
-								<p>Tarefa concluída</p>
+								<p class="font-bold text-deep-blue">Tarefa concluída</p>
 							</div>
-							<button type="button">
-								<img src="/images/icons/edit.svg" alt="">
+							<button data-button="edit" class="cursor-pointer" type="button">
+								<img src="/images/icons/edit.svg" alt="" />
 							</button>
 						</li>
-						<li>
-							<div>
-								<button type="button">
-									<img src="/images/icons/checkWhite.svg" alt="">
+						<li data-id="2" class="task peding">
+							<div class="flex gap-4">
+								<button data-button="completed" class="cursor-pointer" type="button">
+									<img src="/images/icons/checkWhite.svg" alt="" />
 								</button>
-								<p>Tarefa pedente</p>
-							</button>
-							<button type="button">
-								<img src="/images/icons/edit.svg" alt="">
+								<p class="font-bold text-deep-blue">Tarefa pedente</p>
+							</div>
+							<button data-button="edit" class="cursor-pointer" type="button">
+								<img src="/images/icons/edit.svg" alt="" />
 							</button>
 						</li>
-						<li>
-							<h3>Adicionando tarefa</h3>
-							<input placeholder="No que você está trabalhando?" type="text" name="" id="">
-							<div>
-								<button type="button">
-									<img src="/images/icons/delete.svg" alt="">
+						<li class="edit">
+							<h3 class="text-deep-blue">Adicionando tarefa</h3>
+							<textarea id="task-name" class="resize-none h-30 w-full bg-text-area rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName"></textarea>
+							<div class="flex justify-between items-center w-full">
+								<button id="delete-task" class="button cancel cursor-pointer" type="button">
+									<img src="/images/icons/delete.svg" alt="" />
 									deletar
 								</button>
-								<button type="button">
-									<img src="/images/icons/close.svg" alt="">
-									Cancelar
-								</button>
-								<button type="button">
-									<img src="/images/icons/save.svg" alt="">
-									Salvar
-								</button>
+								<div class="flex gap-4">
+									<button id="cancel-task" class="button cancel cursor-pointer" type="button">
+										<img src="/images/icons/close.svg" alt="" />
+										Cancelar
+									</button>
+									<button id="save-task" class="button save cursor-pointer" type="button">
+										<img src="/images/icons/save.svg" alt="" />
+										Salvar
+									</button>
+								</div>
 							</div>
 						</li>
 					</ul>
-					<button type="button">
-						<img src="/images/icons/addIcon.svg" alt="">
+					<button id="add-task" class="button addTask mt-10 mb-12 text-complementary2 font-bold" type="button">
+						<img src="/images/icons/addIcon.svg" alt="" />
 						Adicionar nova tarefa
 					</button>
 				</section>
 			</div>
 		</main>
-		<footer>
+		<footer class="py-6 text-center">
 			<p>Desenvolvido por Michael Rocha</p>
 		</footer>
 		<script type="module" src="/src/typescript/controller.ts"></script>

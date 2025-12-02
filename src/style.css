@@ -14,43 +14,74 @@
 	--text-s: 0.833rem;
 	--text-xs: 0.694rem;
 
-	--color-focus-mode: linear-gradient(180deg, rgba(139, 31, 248, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
-	--color-short-rest: linear-gradient(180deg, rgba(15, 114, 92, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
-	--color-long-rest: linear-gradient(180deg, rgba(24, 117, 233, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--bg-focus-mode-overlay: linear-gradient(
+		180deg,
+		rgba(139, 31, 248, 0.8) 0%,
+		rgba(4, 24, 50, 0.8) 48%,
+		rgba(1, 8, 14, 0.8) 100%
+	);
+	--bg-focus-mode: linear-gradient(180deg, rgba(139, 31, 248, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--bg-short-rest-overlay: linear-gradient(180deg, rgba(15, 114, 92, 0.8) 0%, rgba(4, 24, 50, 0.8) 48%, rgba(1, 8, 14, 0.8) 100%);
+	--bg-short-rest: linear-gradient(180deg, rgba(15, 114, 92, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
+	--bg-long-rest-overlay: linear-gradient(180deg, rgba(24, 117, 233, 0.8) 0%, rgba(4, 24, 50, 0.8) 48%, rgba(1, 8, 14, 0.8) 100%);
+	--bg-long-rest: linear-gradient(180deg, rgba(24, 117, 233, 1) 0%, rgba(4, 24, 50, 1) 48%, rgba(1, 8, 14, 1) 100%);
 	--color-deep-blue: #01080e;
 	--color-medium-blue: #041832;
 	--color-royal-blue: #144480;
-	--color-complementary1: linear-gradient(180deg, rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
+	--bg-complementary1: linear-gradient(180deg, rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
 	--color-complementary2: #b872ff;
 	--color-complementary3: rgba(20, 68, 128, 0.3);
 	--color-pending: rgba(255, 255, 255, 0.5);
 	--color-completed: rgba(0, 244, 191, 0.4);
 	--color-checked: rgba(2, 205, 161, 1);
+	--color-text-area: #98A0A8;
+}
+
+@utility bg-focus-mode {
+	background-image: var(--bg-focus-mode-overlay), url("./images/background.png"), var(--bg-focus-mode);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+@utility bg-short-rest {
+	background-image: var(--bg-short-rest-overlay), url("./images/background.png"), var(--bg-short-rest);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+@utility bg-long-rest {
+	background-image: var(--bg-long-rest-overlay), url("./images/background.png"), var(--bg-long-rest);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+@utility bg-complementary1 {
+	background-image: var(--bg-complementary1);
 }
 
 @layer base {
 	h1 {
-		@apply font-unbounded text-4xl;
+		@apply font-unbounded text-xl text-white;
 	}
 
 	h2 {
-		@apply font-unbounded text-3xl;
+		@apply font-unbounded text-3xl text-white;
 	}
 
 	h3 {
-		@apply font-unbounded text-2xl;
+		@apply font-unbounded text-2xl text-white;
 	}
 
 	h4 {
-		@apply font-unbounded text-xl;
+		@apply font-unbounded text-xl text-white;
 	}
 
 	h5 {
-		@apply font-unbounded text-l;
+		@apply font-unbounded text-l text-white;
 	}
 
 	h6 {
-		@apply font-unbounded text-m;
+		@apply font-unbounded text-m text-white;
 	}
 
 	p,
@@ -58,13 +89,17 @@
 	button,
 	label,
 	input {
+		@apply font-montserrat text-base text-white;
+	}
+
+	input::placeholder {
 		@apply font-montserrat text-base;
 	}
 }
 
 @layer components {
 	.button {
-		@apply flex justify-center items-center rounded-4xl;
+		@apply flex justify-center items-center rounded-4xl cursor-pointer;
 	}
 
 	/* uses button class */
@@ -73,29 +108,33 @@
 	}
 
 	.addTask {
-		@apply max-w-147 w-full h-16 bg-transparent gap-0.5;
+		@apply max-w-147 w-full h-12 bg-transparent gap-2 rounded-4xl border-2 border-solid border-complementary2;
 	}
 
 	.save {
-		@apply max-w-29 w-full h-10 bg-deep-blue;
+		@apply max-w-29 w-full h-10 bg-deep-blue flex gap-1 font-bold px-4 py-3;
 	}
 
 	.cancel {
-		@apply max-w-32 w-full h-10 bg-transparent;
+		@apply max-w-32 h-10 bg-transparent flex gap-1 font-bold w-fit;
 	}
 
 	/* does not use button class */
-	.changeMode {
-		@apply bg-royal-blue rounded-lg max-w-40 w-full h-11 flex items-center justify-center;
+	.selected-mode {
+		@apply font-bold bg-royal-blue;
 	}
 
-	.switch {
-		@apply bg-complementary2 rounded-3xl max-w-15 w-full h-8 flex items-center;
+	.mode {
+		@apply text-s p-2 rounded-lg cursor-pointer;
+	}
+
+	.music{
+		@apply w-15 h-7.5 cursor-pointer rounded-3xl px-1 flex items-center;
 	}
 
 	/* tasks */
 	.task {
-		@apply max-w-147 w-full h-16 flex justify-between items-center;
+		@apply max-w-147 w-full h-16 px-4 py-2 flex justify-between items-center rounded-lg;
 	}
 
 	.completed {
@@ -107,11 +146,11 @@
 	}
 
 	.edit {
-		@apply bg-pending flex flex-col gap-8 items-center max-w-147 w-full;
+		@apply bg-pending flex flex-col gap-8 items-center max-w-147 w-full p-4 rounded-lg;
 	}
 
 	/* timer */
 	.timer {
-		@apply max-w-147 w-full h-81 md:h-97.5 flex flex-col items-center gap-8 bg-complementary3 border-royal-blue border-2 border-solid rounded-4xl;
+		@apply max-w-147 w-full h-81 md:h-97.5 flex flex-col items-center justify-center gap-8 bg-complementary3 border-royal-blue border-2 border-solid rounded-4xl;
 	}
 }
