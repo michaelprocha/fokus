@@ -4,6 +4,7 @@
 	--font-montserrat: "Montserrat", sans-serif;
 	--font-unbounded: "Unbounded", sans-serif;
 
+	--text-5xl: 7rem;
 	--text-4xl: 4.3rem;
 	--text-3xl: 2.986rem;
 	--text-2xl: 2.074rem;
@@ -31,10 +32,51 @@
 	--bg-complementary1: linear-gradient(180deg, rgba(184, 114, 255, 1) 0%, rgba(20, 68, 128, 1) 100%);
 	--color-complementary2: #b872ff;
 	--color-complementary3: rgba(20, 68, 128, 0.3);
+	--color-complementary4: #98a0a8;
 	--color-pending: rgba(255, 255, 255, 0.5);
 	--color-completed: rgba(0, 244, 191, 0.4);
 	--color-checked: rgba(2, 205, 161, 1);
-	--color-text-area: #98A0A8;
+
+	--breakpoint-1xl: 90rem;
+
+	--animate-right: switch-to-right 1s ease-in-out forwards;
+	--animate-on: switch-color-on 1s ease-in-out forwards;
+	--animate-left: switch-to-left 1s ease-in-out forwards;
+	--animate-off: switch-color-off 1s ease-in-out forwards;
+
+	@keyframes switch-color-on {
+		from {
+			background-color: #01080e;
+		}
+		to {
+			background-color: #b872ff;
+		}
+	}
+	@keyframes switch-color-off {
+		from {
+			background-color: #b872ff;
+		}
+		to {
+			background-color: #01080e;
+		}
+	}
+
+	@keyframes switch-to-right {
+		from {
+			transform: translatex(0%);
+		}
+		to {
+			transform: translatex(100%);
+		}
+	}
+	@keyframes switch-to-left {
+		from {
+			transform: translatex(100%);
+		}
+		to {
+			transform: translatex(0%);
+		}
+	}
 }
 
 @utility bg-focus-mode {
@@ -125,10 +167,10 @@
 	}
 
 	.mode {
-		@apply text-s p-2 rounded-lg cursor-pointer;
+		@apply text-s p-2 rounded-lg cursor-pointer md:text-base;
 	}
 
-	.music{
+	.music {
 		@apply w-15 h-7.5 cursor-pointer rounded-3xl px-1 flex items-center;
 	}
 
