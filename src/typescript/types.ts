@@ -1,21 +1,18 @@
-type Status = true | false;
-
 interface Task {
 	id: number;
 	content: string;
-	done: boolean;
+	completed: boolean;
 }
 
 type TaskCreate = Omit<Task, "id">;
 
 interface TaskModel {
-	tasks: Task[];
-	getAllTasks(): Task[] | string;
-    getTask(id: number): Task | string;
-	addTask(task: TaskCreate): Task | string;
-	deleteTaks(id: number): string;
-	editTask(id: number, content: string): string;
-	completedTask(id: number): string;
+	getAllTasks(): Task[];
+    getTask(id: number): Task;
+	addTask(task: TaskCreate): Task;
+	deleteTaks(id: number): void;
+	editTask(id: number, content: string): void;
+	completedTask(id: number): void;
 }
 
 interface TaskView {
@@ -47,4 +44,4 @@ interface TaskController {
 	handlePlayTimer(): void;
 }
 
-export type { Status, Task, TaskCreate, TaskModel, TaskView, TaskController };
+export type { Task, TaskCreate, TaskModel, TaskView, TaskController };
