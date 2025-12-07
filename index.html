@@ -49,8 +49,8 @@
 					<ul class="max-w-147 w-full flex flex-col gap-2 justify-center items-center">
 						<li data-id="1" class="task completed">
 							<div class="flex gap-4">
-								<button data-button="completed" class="cursor-pointer" type="button">
-									<img src="/images/icons/checkGreen.svg" alt="" />
+								<button data-button="complete" class="cursor-pointer" type="button" aria-pressed="true" aria-label="Desmarcar tarefa concluída">
+									<img src="/images/icons/checkGreen.svg" aria-hidden="true" />
 								</button>
 								<p class="font-bold text-deep-blue">Tarefa concluída</p>
 							</div>
@@ -60,7 +60,7 @@
 						</li>
 						<li data-id="2" class="task peding">
 							<div class="flex gap-4">
-								<button data-button="completed" class="cursor-pointer" type="button">
+								<button data-button="complete" class="cursor-pointer" type="button">
 									<img src="/images/icons/checkWhite.svg" alt="" />
 								</button>
 								<p class="font-bold text-deep-blue">Tarefa pedente</p>

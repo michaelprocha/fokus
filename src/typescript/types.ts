@@ -16,7 +16,7 @@ interface TaskModel {
 }
 
 interface TaskView {
-	renderAllTask(tasks: Task[] | string): void; // when open or reload page
+	renderAllTask(tasks: Task[], list: HTMLUListElement): void; // when open or reload page
 	renderOpenEditTask(task: Task | string): void; // ( edit task ) when click image edit
 	renderCloseEditTask(message: string): void; // cancel or edit from edit task //
     renderOpenTask(): void; // ( open task ) when click button "Adicionar nova tarefa"
