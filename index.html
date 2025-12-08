@@ -46,10 +46,16 @@
 				</section>
 				<section class="w-full flex flex-col items-center">
 					<h2 class="text-2xl text-center mb-6">Lista de tarefas:</h2>
-					<ul class="max-w-147 w-full flex flex-col gap-2 justify-center items-center">
+					<ul id="tasks-list" class="max-w-147 w-full flex flex-col gap-2 justify-center items-center">
 						<li data-id="1" class="task completed">
 							<div class="flex gap-4">
-								<button data-button="complete" class="cursor-pointer" type="button" aria-pressed="true" aria-label="Desmarcar tarefa concluída">
+								<button
+									data-button="complete"
+									class="cursor-pointer"
+									type="button"
+									aria-pressed="true"
+									aria-label="Desmarcar tarefa concluída"
+								>
 									<img src="/images/icons/checkGreen.svg" aria-hidden="true" />
 								</button>
 								<p class="font-bold text-deep-blue">Tarefa concluída</p>
@@ -69,11 +75,35 @@
 								<img src="/images/icons/edit.svg" alt="" />
 							</button>
 						</li>
-						<li class="edit">
+						<li class="edit" data-add="true">
 							<h3 class="text-deep-blue">Adicionando tarefa</h3>
-							<textarea id="task-name" class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName"></textarea>
+							<textarea
+								id="task-name"
+								class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start"
+								placeholder="No que você está trabalhando?"
+								name="taskName"
+							></textarea>
+							<div class="flex justify-end items-center gap-4 w-full">
+								<button id="cancel-task" class="button cancel cursor-pointer text-deep-blue" type="button">
+									<img src="/images/icons/close.svg" alt="" />
+									Cancelar
+								</button>
+								<button id="save-task" class="button save cursor-pointer" type="button">
+									<img src="/images/icons/save.svg" alt="" />
+									Salvar
+								</button>
+							</div>
+						</li>
+						<li class="edit">
+							<h3 class="text-deep-blue">Editando tarefa</h3>
+							<textarea
+								id="task-name"
+								class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start"
+								placeholder="No que você está trabalhando?"
+								name="taskName"
+							></textarea>
 							<div class="flex justify-between items-center w-full">
-								<button id="delete-task" class="button cancel cursor-pointer text-deep-blue" type="button">
+								<button data-button="delete" class="button cancel cursor-pointer text-deep-blue" type="button">
 									<img src="/images/icons/delete.svg" alt="" />
 									deletar
 								</button>

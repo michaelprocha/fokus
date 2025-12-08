@@ -26,7 +26,7 @@ export default class Model implements TaskModel {
 		return task[0];
 	}
 
-	addTask(task: TaskCreate): Task {
+	addTask(task: TaskCreate): number {
 		const newTask: Task = {
 			id: this.idGenerator(),
 			content: task.content,
@@ -35,7 +35,7 @@ export default class Model implements TaskModel {
 
 		this.tasks.push(newTask);
 		localStorage.setItem('tasks', JSON.stringify(this.tasks));
-		return newTask;
+		return newTask.id;
 	}
 
 	deleteTaks(id: number): void {
@@ -54,14 +54,16 @@ export default class Model implements TaskModel {
 		return;
 	}
 	
-	completedTask(id: number): void {
+	completedTask(id: number): boolean {
+		let completed: boolean;
 		this.tasks.forEach((task, iTask, arrTask) => {
 			if (task.id === id) {
 				arrTask[iTask].completed = !task.completed;
+				completed = !task.completed;
 			}
 		});
 		localStorage.setItem('tasks', JSON.stringify(this.tasks));
-		return;
+		return completed!;
 	}
 
 	private idGenerator(): number {

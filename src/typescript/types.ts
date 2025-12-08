@@ -9,23 +9,24 @@ type TaskCreate = Omit<Task, "id">;
 interface TaskModel {
 	getAllTasks(): Task[];
     getTask(id: number): Task;
-	addTask(task: TaskCreate): Task;
+	addTask(task: TaskCreate): number;
 	deleteTaks(id: number): void;
 	editTask(id: number, content: string): void;
-	completedTask(id: number): void;
+	completedTask(id: number): boolean;
 }
 
 interface TaskView {
-	renderAllTask(tasks: Task[], list: HTMLUListElement): void; // when open or reload page
-	renderOpenEditTask(task: Task | string): void; // ( edit task ) when click image edit
-	renderCloseEditTask(message: string): void; // cancel or edit from edit task //
-    renderOpenTask(): void; // ( open task ) when click button "Adicionar nova tarefa"
-	renderAddTask(task: Task | string): void; // add from open task //
-    renderRemoveTask(): void; // cancel from open task or delete from edit edit task //
-	renderCompletedTask(message: string): void;
-	renderSetTimer(set: string): void; // change clock time
-	renderSong(): void; // play or pause song
-	renderPlayTimer(): void; // start or pause clock
+	renderAllTask(tasks: Task[], tasksList: HTMLUListElement): void;
+	renderOpenEditTask(task: Task, taskOpen: HTMLLIElement): void;
+	renderSaveEditTask(editLi: HTMLLIElement): void;
+	renderDeleteEditTask(editLi: HTMLLIElement): void;
+	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean): void;
+    renderOpenTask(listElement: HTMLUListElement): void;
+	renderAddTask(idTask: number, listElement: HTMLUListElement): void
+	renderCancelAddTask(liCancel: HTMLLIElement): void;
+	renderSetTimer(set: string): void;
+	renderSong(): void;
+	renderPlayTimer(): void;
 }
 
 interface TaskController {
