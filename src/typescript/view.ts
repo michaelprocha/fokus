@@ -1,4 +1,4 @@
-import type { Task, TaskCreate, TaskView } from "./types";
+import type { Task, TaskView } from "./types";
 import green from "../images/icons/checkGreen.svg";
 import white from "../images/icons/checkWhite.svg";
 import edit from "../images/icons/edit.svg";
@@ -11,7 +11,7 @@ const checkers = {
 export default class View implements TaskView {
 	constructor() {}
 
-	renderAllTasks(tasks: Task[], tasksList: HTMLUListElement): void {
+	renderAllTask(tasks: Task[], tasksList: HTMLUListElement): void {
 		if (tasks.length === 0) {
 			return;
 		}
@@ -165,8 +165,8 @@ export default class View implements TaskView {
 
 	renderAddTask(idTask: number, listElement: HTMLUListElement): void {
 		const addLi = document.createElement("li");
-		addLi.setAttribute('data-complete', "false");
-		addLi.setAttribute('data-id', `${idTask}`);
+		addLi.setAttribute("data-complete", "false");
+		addLi.setAttribute("data-id", `${idTask}`);
 		addLi.classList.add("task", "bg-pending");
 
 		addLi.innerHTML = `<div class="flex gap-4">
@@ -180,11 +180,127 @@ export default class View implements TaskView {
 							</button>`;
 
 		listElement.append(addLi);
-		return
+		return;
 	}
 
 	renderCancelAddTask(liCancel: HTMLLIElement): void {
 		liCancel.remove();
+		return;
+	}
+
+	renderSetTimer(groupSet: HTMLElement, setTimer: HTMLButtonElement, timer: HTMLParagraphElement): void {
+		const setElements: HTMLButtonElement[] = Array.from(groupSet.children) as HTMLButtonElement[];
+
+		const chose: string = setTimer.getAttribute("id")!;
+		setTimer.classList.add("selected-mode");
+
+		setElements.forEach((element) => {
+			if (element.getAttribute("id") !== chose) {
+				element.classList.remove("selected-mode");
+			}
+		});
+
+		switch (chose) {
+			case "focus":
+				timer.setAttribute("data-current", "focus");
+				timer.textContent = "25:00";
+				break;
+
+			case "short":
+				timer.setAttribute("data-current", "short");
+				timer.textContent = "05:00";
+				break;
+
+			default:
+				timer.setAttribute("data-current", "long");
+				timer.textContent = "15:00";
+				break;
+		}
+
+		return;
+	}
+
+	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement): void {
+		const attribute: string = timer.getAttribute("data-current")!;
+		let play: boolean;
+
+		if (attribute === "true") {
+			play = true;
+		} else {
+			play = false;
+		}
+
+		const mode: string = timer.getAttribute("data-mode")!;
+
+		const count = new Audio("../audio/Contagem regressiva e toque.mp3");
+		count.loop = false;
+
+		const beep = new Audio("../audio/Beep.mp3");
+		beep.loop = false;
+		
+		let countdown: number
+
+		if (play) {
+			button.textContent = "Pausar";
+			const audio = new Audio("../audio/Press play.wav");
+			audio.loop = false;
+			audio.play();
+
+			if (timer.innerText === "00:00") {
+				switch (mode) {
+					case "focus":
+						timer.textContent = "25:00";
+						break;
+
+					case "long":
+						timer.textContent = "15:00";
+						break;
+
+					default:
+						timer.textContent = "05:00";
+						break;
+				}
+			}
+			const partOneDate: string = "Tue Dec 09 2025 00:";
+			const partTwoDate: string = " GMT-0300 (Horário Padrão de Brasília)";
+			const dateTo: string = `${partOneDate}${timer.innerText}${partTwoDate}`;
+			let timeStamp = Date.parse(dateTo);
+			countdown = setInterval(() => {
+				timeStamp -= 10;
+				let showTime = new Date(timeStamp).toLocaleTimeString("pt-BR");
+				showTime = showTime.substring(3);
+				timer.textContent = showTime;
+				if (showTime === "00:12") {
+					count.play();
+				}
+
+				if (showTime === "00:00") {
+					clearInterval(countdown);
+					beep.play();
+					button.textContent = "Começar";
+					timer.setAttribute("data-current", "true");
+				}
+			}, 1000);
+		}else{
+			const audio = new Audio("../audio/Press stop button.mp3");
+			count.pause();
+			count.currentTime = 0;
+			audio.loop = false;
+			audio.play();
+			button.textContent = "Começar";
+			clearInterval(countdown!);
+		}
+	}
+
+	renderSong(): void{
+		const song = new Audio("../audio.Luna Rise, Part One.mp3");
+		song.loop = true;
+		if (song.paused) {
+			song.play()
+			return;
+		}
+
+		song.pause();
 		return;
 	}
 }
