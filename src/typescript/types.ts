@@ -30,19 +30,17 @@ interface TaskView {
 }
 
 interface TaskController {
-	model: TaskModel;
-	view: TaskView;
 	setupEventListeners(): void;
 	handleStartView(): void;
-	handleAddTask(): void;
-	handleRemoveTask(id: number): void;
-	handleEditTask(id: number): void;
-	handleCompletedTaks(id: number): void;
-    handleOpenTask(): void;
-    handleCancelTask(): void;
-	handleSetTimer(set: string): void;
-	handleSong(): void;
-	handlePlayTimer(): void;
+    handleOpenTaks(): void;
+	// handleAddTask(): void;
+	// handleRemoveTask(id: number): void;
+	// handleEditTask(id: number): void;
+	// handleCompletedTaks(id: number): void;
+    // handleCancelTask(): void;
+	// handleSetTimer(set: string): void;
+	// handleSong(): void;
+	// handlePlayTimer(): void;
 }
 
 export type { Task, TaskCreate, TaskModel, TaskView, TaskController };

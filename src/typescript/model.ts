@@ -1,4 +1,4 @@
-import type { Task, TaskCreate, TaskModel } from "./types";
+import type { Task, TaskCreate, TaskModel } from "./types.js";
 
 export default class Model implements TaskModel {
 	private tasks: Task[] = [];
@@ -12,7 +12,7 @@ export default class Model implements TaskModel {
 			return [];
 		}
 		this.tasks = JSON.parse(data);
-		return this.tasks;
+		return [...this.tasks];
 	}
 	
 	getTask(id: number): Task {

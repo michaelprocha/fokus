@@ -1,4 +1,4 @@
-import type { Task, TaskView } from "./types";
+import type { Task, TaskView } from "./types.js";
 import green from "../images/icons/checkGreen.svg";
 import white from "../images/icons/checkWhite.svg";
 import edit from "../images/icons/edit.svg";
@@ -63,43 +63,43 @@ export default class View implements TaskView {
 		return;
 	}
 
-	private renderOpenAddOrEditTask(content?: string, liElement?: HTMLLIElement): void | string {
+	renderOpenAddOrEditTask(content?: string, liElement?: HTMLLIElement): void | string {
 		if (liElement) {
 			liElement.setAttribute("data-action", "edit");
 			liElement.classList.add("edit");
 			liElement.innerHTML = `<h3 class="text-deep-blue">Editando Tarefa</h3>
 	    			    		    <textarea class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName">${content}</textarea>
-		    			    	    <div class="flex justify-end items-center gap-4 w-full">
-			    		    	        <button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar mudança na tarefa">
-	    		    		    	        <img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
-		    		    		            Cancelar
-    					                </button>
-    		    			            <button data-button="save" class="button save cursor-pointer" type="button" aria-label="Salvar mudança na terefa">
-    			    			            <img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
-		    		    		            Salvar
-			        			        </button>
-				        		    </div>`;
+		    			    	    <div class="flex justify-between items-center w-full">
+							        	<button data-button="delete" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Deletar tarefa">
+								        	<img data-button="delete" src="/images/icons/delete.svg" aria-hidden="true" />
+								        	deletar
+							         	</button>
+										<div class="flex gap-4 md:gap-12">
+			    		    	        	<button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar mudança na tarefa">
+	    		    		    	        	<img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
+		    		    		            	Cancelar
+    					                	</button>
+    		    			            	<button data-button="save" class="button save cursor-pointer" type="button" aria-label="Salvar mudança na terefa">
+    			    			            	<img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
+		    		    		            	Salvar
+			        			        	</button>
+				        		    	</div>
+									</div>`;
 			return;
 		}
 
 		const li: string = `<li data-complete="false" class="edit" data-action="add">
 							    <h3 class="text-deep-blue">Adicionando Tarefa</h3>
 							    <textarea class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName"></textarea>
-						        <div class="flex justify-between items-center w-full">
-							        <button data-button="delete" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Deletar tarefa">
-								        <img data-button="delete" src="/images/icons/delete.svg" aria-hidden="true" />
-								        deletar
+						        <div class="flex justify-end items-center gap-4 w-full">
+								    <button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar, não adicionar tarefa">
+									    <img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
+							    	    Cancelar
 							        </button>
-							        <div class="flex gap-4 md:gap-12">
-								        <button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar, não adicionar tarefa">
-								    	    <img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
-								    	    Cancelar
-								        </button>
-								        <button data-button="save" class="button save cursor-pointer" type="button" aria-label="Adicionar terefa">
-									        <img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
-									        Salvar
-								        </button>
-							        </div>
+							        <button data-button="save" class="button save cursor-pointer" type="button" aria-label="Adicionar terefa">
+								        <img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
+								        Salvar
+							        </button>
 						        </div>
 					        </li>`;
 		return li;
@@ -191,28 +191,28 @@ export default class View implements TaskView {
 	renderSetTimer(groupSet: HTMLElement, setTimer: HTMLButtonElement, timer: HTMLParagraphElement): void {
 		const setElements: HTMLButtonElement[] = Array.from(groupSet.children) as HTMLButtonElement[];
 
-		const chose: string = setTimer.getAttribute("id")!;
+		const chose: string = setTimer.getAttribute("data-mode")!;
 		setTimer.classList.add("selected-mode");
 
 		setElements.forEach((element) => {
-			if (element.getAttribute("id") !== chose) {
+			if (element.getAttribute("data-mode") !== chose) {
 				element.classList.remove("selected-mode");
 			}
 		});
 
 		switch (chose) {
 			case "focus":
-				timer.setAttribute("data-current", "focus");
+				timer.setAttribute("data-mode", "focus");
 				timer.textContent = "25:00";
 				break;
 
 			case "short":
-				timer.setAttribute("data-current", "short");
+				timer.setAttribute("data-mode", "short");
 				timer.textContent = "05:00";
 				break;
 
 			default:
-				timer.setAttribute("data-current", "long");
+				timer.setAttribute("data-mode", "long");
 				timer.textContent = "15:00";
 				break;
 		}
@@ -221,7 +221,7 @@ export default class View implements TaskView {
 	}
 
 	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement): void {
-		const attribute: string = timer.getAttribute("data-current")!;
+		const attribute: string = timer.getAttribute("data-play")!;
 		let play: boolean;
 
 		if (attribute === "true") {
@@ -278,7 +278,7 @@ export default class View implements TaskView {
 					clearInterval(countdown);
 					beep.play();
 					button.textContent = "Começar";
-					timer.setAttribute("data-current", "true");
+					timer.setAttribute("data-play", "true");
 				}
 			}, 1000);
 		}else{

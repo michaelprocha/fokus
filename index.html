@@ -28,11 +28,11 @@
 				</section>
 				<section class="timer">
 					<div id="set-timer" class="flex gap-2">
-						<button id="focus" class="mode selected-mode">Foco</button>
-						<button id="short-rest" class="mode">Descanso curto</button>
-						<button id="long-rest" class="mode">Descanso longo</button>
+						<button data-mode="focus" class="mode selected-mode">Foco</button>
+						<button data-mode="short" class="mode">Descanso curto</button>
+						<button data-mode="long" class="mode">Descanso longo</button>
 					</div>
-					<p id="timer" class="text-3xl font-bold tracking-wider md:text-5xl">25:00</p>
+					<p data-play="true" data-mode="focus" id="timer" class="text-3xl font-bold tracking-wider md:text-5xl">25:00</p>
 					<div class="flex items-center gap-4">
 						<button id="switch" class="bg-medium-blue music">
 							<div class="bg-white rounded-3xl w-6 h-6"></div>
@@ -47,7 +47,7 @@
 				<section class="w-full flex flex-col items-center">
 					<h2 class="text-2xl text-center mb-6">Lista de tarefas:</h2>
 					<ul id="tasks-list" class="max-w-147 w-full flex flex-col gap-2 justify-center items-center">
-						<li data-id="1" class="task completed">
+						<!-- <li data-id="1" class="task completed">
 							<div class="flex gap-4">
 								<button
 									data-button="complete"
@@ -118,7 +118,7 @@
 									</button>
 								</div>
 							</div>
-						</li>
+						</li> -->
 					</ul>
 					<button id="add-task" class="button addTask mt-10 mb-12 text-complementary2 font-bold" type="button">
 						<img src="/images/icons/addIcon.svg" alt="" />
