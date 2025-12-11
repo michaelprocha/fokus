@@ -23,28 +23,52 @@ class Controller implements TaskController {
 		list.addEventListener("click", (e: MouseEvent) => {
 			const element = e.target as HTMLElement;
 			const attributeElement: string | null = element.getAttribute("data-button");
+
 			if (attributeElement) {
 				if (attributeElement === "save" || attributeElement === "delete" || attributeElement === "cancel") {
-					const parentElement: HTMLElement = element.parentElement!.parentElement!;
+					const parentElement: HTMLElement = element.parentElement!.parentElement as HTMLElement;
 					const attributeParentElement: string | null = parentElement.getAttribute("data-action");
+
+					const grandfatherElement = parentElement.parentElement as HTMLElement;
+					const attributeGrandfatherElement: string | null = grandfatherElement.getAttribute("data-action");
+
+					const greatGrandfatherElement = grandfatherElement.parentElement as HTMLElement;
+					const attributeGreatGrandfatherElement: string | null = greatGrandfatherElement.getAttribute("data-action");
+
 					if (attributeParentElement) {
-                        if (attributeParentElement === "add" && attributeElement === "save") {
-                            this.handleAddTask(parentElement, list);
+						if (attributeParentElement === "add" && attributeElement === "save") {
+							this.handleAddTask(parentElement, list);
+						} else if (attributeParentElement === "add" && attributeElement === "cancel") {
+							this.handelCancelAddTask(parentElement);
+						} else if (attributeParentElement === "edit" && attributeElement === "delete") {
+							console.log("delete");
 						}
-					} else {
-                        const grandfatherElement = parentElement.parentElement as HTMLLIElement;
-                        const attributeGrandfatherElement: string = grandfatherElement.getAttribute("data-action")!;
+					} else if (attributeGrandfatherElement){
+						if (attributeGrandfatherElement === "add" && attributeElement === "save") {
+							this.handleAddTask(grandfatherElement, list);
+						} else if (attributeGrandfatherElement === "add" && attributeElement === "cancel") {
+							this.handelCancelAddTask(grandfatherElement);
+						} else if(attributeGrandfatherElement === "edit" && attributeElement === "delete"){
+							console.log("delete com img");
+						}else if(attributeGrandfatherElement === "edit" && attributeElement === "cancel"){
+							console.log("cancel");
+							this.handleCancelEditTask(grandfatherElement);
+						}else if(attributeGrandfatherElement === "edit" && attributeElement === "save"){
+							console.log("save");
+						}
+					}else if(attributeGreatGrandfatherElement){
+						if(attributeGreatGrandfatherElement === "edit" && attributeElement === "cancel"){
+							console.log("cancel com img");
+							this.handleCancelEditTask(greatGrandfatherElement);
+						}else if(attributeGreatGrandfatherElement === "edit" && attributeElement === "save"){
+							console.log("save com img");
+						}
 					}
+				} else if (attributeElement === "edit") {
+					const liElement = element.parentElement!.parentElement as HTMLLIElement;
+					this.handleOpenEditTask(liElement);
 				}
-				console.log(element.getAttribute("data-button"));
-				console.log(element.parentElement);
-				console.log(element.parentElement!.parentElement);
-				console.log(element.parentElement!.parentElement?.getAttribute("data-action"));
 			}
-			if (element.getAttribute("data-action")) {
-				console.log(element.getAttribute("data-button"));
-			}
-			// const typeOfElement = element.getAttribute("data-button");
 		});
 
 		const addButton = document.querySelector("#add-task") as HTMLButtonElement;
@@ -54,19 +78,35 @@ class Controller implements TaskController {
 	handleOpenTaks = (): void => {
 		const list = document.querySelector("#tasks-list") as HTMLUListElement;
 		this.view.renderOpenTask(list);
+		return;
 	};
 
-	private handleAddTask = (grandfatherElement: HTMLElement, list: HTMLUListElement): void => {
-		const text = grandfatherElement.querySelector("textarea") as HTMLTextAreaElement;
+	handelCancelAddTask = (liElement: HTMLElement): void => {
+		this.view.renderCancelAddTask(liElement);
+		return;
+	};
+
+	handleAddTask = (liElement: HTMLElement, list: HTMLUListElement): void => {
+		const text = liElement.querySelector("textarea") as HTMLTextAreaElement;
 		const task: TaskCreate = {
 			content: text.value,
 			completed: false,
 		};
 		const id: number = this.model.addTask(task);
-		this.view.renderAddTask(id, list);
+		this.view.renderAddTask(id, list, liElement);
 	};
 
-	// handleActionTask(): void {}
+	handleOpenEditTask = (liElement: HTMLLIElement): void => {
+		const id = parseInt(liElement.getAttribute("data-id")!);
+		const task = this.model.getTask(id);
+		this.view.renderOpenEditTask(task, liElement);
+		return;
+	};
+
+	handleCancelEditTask = (liElement: HTMLElement): void => {
+		this.view.renderSaveEditTask(liElement);
+		return;
+	};
 }
 
 const controller = new Controller();

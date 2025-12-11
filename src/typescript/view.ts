@@ -57,8 +57,8 @@ export default class View implements TaskView {
 
 	renderOpenEditTask(task: Task, taskOpen: HTMLLIElement): void {
 		taskOpen.classList.contains("bg-completed")
-			? taskOpen.classList.remove("bg-completed")
-			: taskOpen.classList.remove("bg-pending");
+			? taskOpen.classList.remove("bg-completed", "task")
+			: taskOpen.classList.remove("bg-pending", "task");
 		this.renderOpenAddOrEditTask(task.content, taskOpen);
 		return;
 	}
@@ -105,7 +105,7 @@ export default class View implements TaskView {
 		return li;
 	}
 
-	renderSaveEditTask(editLi: HTMLLIElement): void {
+	renderSaveEditTask(editLi: HTMLElement): void {
 		editLi.removeAttribute("data-action");
 		editLi.classList.remove("edit");
 
@@ -163,7 +163,7 @@ export default class View implements TaskView {
 		return;
 	}
 
-	renderAddTask(idTask: number, listElement: HTMLUListElement): void {
+	renderAddTask(idTask: number, listElement: HTMLUListElement, liElement: HTMLElement): void {
 		const addLi = document.createElement("li");
 		addLi.setAttribute("data-complete", "false");
 		addLi.setAttribute("data-id", `${idTask}`);
@@ -178,12 +178,12 @@ export default class View implements TaskView {
 							<button data-button="edit" class="cursor-pointer" type="button" aria-label="Editar tarefa">
 								<img data-button="edit" src="${edit}" aria-hidden="true" />
 							</button>`;
-
+		liElement.remove();
 		listElement.append(addLi);
 		return;
 	}
 
-	renderCancelAddTask(liCancel: HTMLLIElement): void {
+	renderCancelAddTask(liCancel: HTMLElement): void {
 		liCancel.remove();
 		return;
 	}
