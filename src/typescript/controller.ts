@@ -42,6 +42,7 @@ class Controller implements TaskController {
 							this.handelCancelAddTask(parentElement);
 						} else if (attributeParentElement === "edit" && attributeElement === "delete") {
 							console.log("delete");
+							this.handleDeleteTask(parentElement);
 						}
 					} else if (attributeGrandfatherElement){
 						if (attributeGrandfatherElement === "add" && attributeElement === "save") {
@@ -50,11 +51,14 @@ class Controller implements TaskController {
 							this.handelCancelAddTask(grandfatherElement);
 						} else if(attributeGrandfatherElement === "edit" && attributeElement === "delete"){
 							console.log("delete com img");
+							this.handleDeleteTask(grandfatherElement);
 						}else if(attributeGrandfatherElement === "edit" && attributeElement === "cancel"){
 							console.log("cancel");
 							this.handleCancelEditTask(grandfatherElement);
 						}else if(attributeGrandfatherElement === "edit" && attributeElement === "save"){
 							console.log("save");
+							this.handleSaveEditTask(grandfatherElement);
+
 						}
 					}else if(attributeGreatGrandfatherElement){
 						if(attributeGreatGrandfatherElement === "edit" && attributeElement === "cancel"){
@@ -62,11 +66,14 @@ class Controller implements TaskController {
 							this.handleCancelEditTask(greatGrandfatherElement);
 						}else if(attributeGreatGrandfatherElement === "edit" && attributeElement === "save"){
 							console.log("save com img");
+							this.handleSaveEditTask(greatGrandfatherElement);
 						}
 					}
 				} else if (attributeElement === "edit") {
 					const liElement = element.parentElement!.parentElement as HTMLLIElement;
 					this.handleOpenEditTask(liElement);
+				} else if (attributeElement === "complete") {
+					this.handleCompleteTaks(element);
 				}
 			}
 		});
@@ -107,6 +114,31 @@ class Controller implements TaskController {
 		this.view.renderSaveEditTask(liElement);
 		return;
 	};
+
+	handleSaveEditTask = (liElement: HTMLElement): void => {
+		const id: number = parseInt(liElement.getAttribute("data-id")!);
+		const content: string = liElement.querySelector("textarea")!.value;
+		this.model.editTask(id, content);
+		this.handleCancelEditTask(liElement);
+	}
+
+	handleDeleteTask = (liElement: HTMLElement): void => {
+		const id: number = parseInt(liElement.getAttribute("data-id")!)
+		this.model.deleteTaks(id);
+		this.view.renderDeleteEditTask(liElement);
+		return;
+	}
+
+	handleCompleteTaks = (element: HTMLElement): void => {
+		const imgElement = element as HTMLImageElement;
+		const liElement = imgElement.parentElement!.parentElement!.parentElement as HTMLLIElement;
+		const pElement = imgElement.parentElement!.parentElement!.querySelector("p") as HTMLParagraphElement;
+		const btnElement = imgElement.parentElement as HTMLButtonElement;
+		const id: number = parseInt(liElement.getAttribute("data-id")!);
+		const completed: boolean = this.model.completedTask(id);
+		this.view.renderCompletedTask(btnElement, imgElement, completed, liElement, pElement);
+		return;
+	}
 }
 
 const controller = new Controller();

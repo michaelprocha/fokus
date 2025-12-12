@@ -140,20 +140,26 @@ export default class View implements TaskView {
 		return;
 	}
 
-	renderDeleteEditTask(editLi: HTMLLIElement): void {
+	renderDeleteEditTask(editLi: HTMLElement): void {
 		editLi.remove();
 	}
 
-	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean): void {
+	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean, liElement: HTMLLIElement, textComplete: HTMLParagraphElement): void {
 		if (completed) {
 			btnElement.setAttribute("aria-pressed", "true");
 			btnElement.setAttribute("aria-label", "Desmarcar tarefa concluída");
 			imgButton.setAttribute("src", checkers.green);
+			liElement.classList.add("bg-completed")
+			liElement.classList.remove("bg-pending")
+			textComplete.textContent = "Tarefa concluída";
 			return;
 		}
 		btnElement.setAttribute("aria-pressed", "false");
 		btnElement.setAttribute("aria-label", "Marcar tarefa como concluída");
 		imgButton.setAttribute("src", checkers.white);
+		liElement.classList.add("bg-pending")
+		liElement.classList.remove("bg-completed")
+		textComplete.textContent = "Tarefa pendente";
 		return;
 	}
 

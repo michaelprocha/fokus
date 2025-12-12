@@ -59,7 +59,7 @@ export default class Model implements TaskModel {
 		this.tasks.forEach((task, iTask, arrTask) => {
 			if (task.id === id) {
 				arrTask[iTask].completed = !task.completed;
-				completed = !task.completed;
+				completed = arrTask[iTask].completed;
 			}
 		});
 		localStorage.setItem('tasks', JSON.stringify(this.tasks));

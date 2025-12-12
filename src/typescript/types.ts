@@ -19,8 +19,8 @@ interface TaskView {
 	renderAllTask(tasks: Task[], tasksList: HTMLUListElement): void;
 	renderOpenEditTask(task: Task, taskOpen: HTMLLIElement): void;
 	renderSaveEditTask(editLi: HTMLElement): void;
-	renderDeleteEditTask(editLi: HTMLLIElement): void;
-	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean): void;
+	renderDeleteEditTask(editLi: HTMLElement): void;
+	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean, liElement: HTMLLIElement, textComplete: HTMLParagraphElement): void;
     renderOpenTask(listElement: HTMLUListElement): void;
 	renderAddTask(idTask: number, listElement: HTMLUListElement, liElement: HTMLElement): void
 	renderCancelAddTask(liCancel: HTMLElement): void;
@@ -36,10 +36,9 @@ interface TaskController {
 	handelCancelAddTask(liElement: HTMLElement): void 
 	handleAddTask(liElement: HTMLElement, list: HTMLUListElement): void;
 	handleOpenEditTask(liElement: HTMLLIElement): void;
-	// handleRemoveTask(id: number): void;
-	// handleEditTask(id: number): void;
-	// handleCompletedTaks(id: number): void;
-    // handleCancelTask(): void;
+	handleDeleteTask(liElement: HTMLElement): void;
+	handleSaveEditTask(liElement: HTMLElement): void;
+	handleCompleteTaks(imgElement: HTMLElement): void;
 	// handleSetTimer(set: string): void;
 	// handleSong(): void;
 	// handlePlayTimer(): void;
