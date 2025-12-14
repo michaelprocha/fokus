@@ -2,13 +2,22 @@ import type { Task, TaskView } from "./types.js";
 import green from "../images/icons/checkGreen.svg";
 import white from "../images/icons/checkWhite.svg";
 import edit from "../images/icons/edit.svg";
-
-const checkers = {
-	green,
-	white,
-};
+import contagemRegressiva from "../audio/Contagem regressiva e toque.mp3";
+import audioBeep from "../audio/Beep.mp3";
+import audioPlay from "../audio/Press play.wav";
+import audioStop from "../audio/Press stop button.mp3";
+import playImage from "../images/icons/playArrow.svg";
+import pauseImage from "../images/icons/pause.svg";
 
 export default class View implements TaskView {
+	private count = new Audio(contagemRegressiva);
+	private beep = new Audio(audioBeep);
+	private audioPlayI = new Audio(audioPlay);
+	private audioStopI = new Audio(audioStop);
+	private checkers = { green, white };
+	private intervalPlay: number = 0;
+	private elementImage = document.createElement("img");
+
 	constructor() {}
 
 	renderAllTask(tasks: Task[], tasksList: HTMLUListElement): void {
@@ -26,13 +35,13 @@ export default class View implements TaskView {
 
 			if (task.completed === true) {
 				complete = "bg-completed";
-				check = checkers.green;
+				check = this.checkers.green;
 				completeText = "Tarefa concluída";
 				checkDesc = "Desmarcar tarefa concluída";
 				ariaPressed = true;
 			} else {
 				complete = "bg-pending";
-				check = checkers.white;
+				check = this.checkers.white;
 				completeText = "Tarefa pendente";
 				checkDesc = "Marcar tarefa como concluída";
 				ariaPressed = false;
@@ -116,13 +125,13 @@ export default class View implements TaskView {
 
 		if (editLi.getAttribute("data-complete") === "true") {
 			editLi.classList.add("task", "bg-completed");
-			check = checkers.green;
+			check = this.checkers.green;
 			completeText = "Tarefa concluída";
 			checkDesc = "Desmarcar tarefa concluída";
 			ariaPressed = true;
 		} else {
 			editLi.classList.add("task", "bg-pending");
-			check = checkers.white;
+			check = this.checkers.white;
 			completeText = "Tarefa pendente";
 			checkDesc = "Marcar tarefa como concluída";
 			ariaPressed = false;
@@ -144,21 +153,27 @@ export default class View implements TaskView {
 		editLi.remove();
 	}
 
-	renderCompletedTask(btnElement: HTMLButtonElement, imgButton: HTMLImageElement, completed: boolean, liElement: HTMLLIElement, textComplete: HTMLParagraphElement): void {
+	renderCompletedTask(
+		btnElement: HTMLButtonElement,
+		imgButton: HTMLImageElement,
+		completed: boolean,
+		liElement: HTMLLIElement,
+		textComplete: HTMLParagraphElement
+	): void {
 		if (completed) {
 			btnElement.setAttribute("aria-pressed", "true");
 			btnElement.setAttribute("aria-label", "Desmarcar tarefa concluída");
-			imgButton.setAttribute("src", checkers.green);
-			liElement.classList.add("bg-completed")
-			liElement.classList.remove("bg-pending")
+			imgButton.setAttribute("src", this.checkers.green);
+			liElement.classList.add("bg-completed");
+			liElement.classList.remove("bg-pending");
 			textComplete.textContent = "Tarefa concluída";
 			return;
 		}
 		btnElement.setAttribute("aria-pressed", "false");
 		btnElement.setAttribute("aria-label", "Marcar tarefa como concluída");
-		imgButton.setAttribute("src", checkers.white);
-		liElement.classList.add("bg-pending")
-		liElement.classList.remove("bg-completed")
+		imgButton.setAttribute("src", this.checkers.white);
+		liElement.classList.add("bg-pending");
+		liElement.classList.remove("bg-completed");
 		textComplete.textContent = "Tarefa pendente";
 		return;
 	}
@@ -177,7 +192,7 @@ export default class View implements TaskView {
 
 		addLi.innerHTML = `<div class="flex gap-4">
 								<button data-button="complete" class="cursor-pointer" type="button" aria-pressed="false" aria-label="Marcar tarefa como concluída">
-									<img data-button="complete" src="${checkers.white}" aria-hidden="true" />
+									<img data-button="complete" src="${this.checkers.white}" aria-hidden="true" />
 								</button>
 								<p class="font-bold text-deep-blue">Tarefa pendente</p>
 							</div>
@@ -228,29 +243,19 @@ export default class View implements TaskView {
 
 	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement): void {
 		const attribute: string = timer.getAttribute("data-play")!;
-		let play: boolean;
 
-		if (attribute === "true") {
-			play = true;
-		} else {
-			play = false;
-		}
-
+		const play: boolean = attribute === "true" ? true : false;
+		console.log(attribute);
+		console.log(play);
 		const mode: string = timer.getAttribute("data-mode")!;
 
-		const count = new Audio("../audio/Contagem regressiva e toque.mp3");
-		count.loop = false;
-
-		const beep = new Audio("../audio/Beep.mp3");
-		beep.loop = false;
-		
-		let countdown: number
-
 		if (play) {
-			button.textContent = "Pausar";
-			const audio = new Audio("../audio/Press play.wav");
-			audio.loop = false;
-			audio.play();
+			button.innerText = "Pausar";
+			this.elementImage.setAttribute("src", pauseImage);
+			button.prepend(this.elementImage);
+			timer.setAttribute("data-play", "false");
+
+			this.audioPlayI.play();
 
 			if (timer.innerText === "00:00") {
 				switch (mode) {
@@ -267,42 +272,61 @@ export default class View implements TaskView {
 						break;
 				}
 			}
-			const partOneDate: string = "Tue Dec 09 2025 00:";
-			const partTwoDate: string = " GMT-0300 (Horário Padrão de Brasília)";
-			const dateTo: string = `${partOneDate}${timer.innerText}${partTwoDate}`;
-			let timeStamp = Date.parse(dateTo);
-			countdown = setInterval(() => {
-				timeStamp -= 10;
-				let showTime = new Date(timeStamp).toLocaleTimeString("pt-BR");
-				showTime = showTime.substring(3);
-				timer.textContent = showTime;
-				if (showTime === "00:12") {
-					count.play();
-				}
 
-				if (showTime === "00:00") {
-					clearInterval(countdown);
-					beep.play();
-					button.textContent = "Começar";
-					timer.setAttribute("data-play", "true");
-				}
-			}, 1000);
-		}else{
-			const audio = new Audio("../audio/Press stop button.mp3");
-			count.pause();
-			count.currentTime = 0;
-			audio.loop = false;
-			audio.play();
-			button.textContent = "Começar";
-			clearInterval(countdown!);
+			let timeStamp: number = this.convertsTime(timer);
+			this.playOrPauseTimer(timer, button, true, timeStamp);
+		} else {
+			this.playOrPauseTimer(timer, button, false);
 		}
 	}
 
-	renderSong(): void{
+	private convertsTime(timer: HTMLParagraphElement): number {
+		const partOneDate: string = "Tue Dec 09 2025 00:";
+		const partTwoDate: string = " GMT-0300 (Horário Padrão de Brasília)";
+		const dateTo: string = `${partOneDate}${timer.innerText}${partTwoDate}`;
+		return Date.parse(dateTo);
+	}
+
+	private playOrPauseTimer(timer: HTMLParagraphElement, button: HTMLButtonElement, playOrPause: boolean, timeStamp?: number) {
+		if (playOrPause) {
+			this.intervalPlay = setInterval(() => {
+				if (timeStamp) {
+					timeStamp -= 1000;
+					let showTime = new Date(timeStamp).toLocaleTimeString("pt-BR");
+					showTime = showTime.substring(3);
+					timer.textContent = showTime;
+
+					if (showTime === "00:12") {
+						this.count.play();
+					}
+
+					if (showTime === "00:00") {
+						clearInterval(this.intervalPlay);
+						this.beep.play();
+						button.textContent = "Começar";
+						this.elementImage.setAttribute("src", playImage);
+						button.prepend(this.elementImage);
+						timer.setAttribute("data-play", "true");
+					}
+				}
+			}, 1000);
+		} else {
+			timer.setAttribute("data-play", "true");
+			this.count.pause();
+			this.count.currentTime = 0;
+			this.audioStopI.play();
+			button.textContent = "Começar";
+			this.elementImage.setAttribute("src", playImage);
+			button.prepend(this.elementImage);
+			clearInterval(this.intervalPlay);
+		}
+	}
+
+	renderSong(): void {
 		const song = new Audio("../audio.Luna Rise, Part One.mp3");
 		song.loop = true;
 		if (song.paused) {
-			song.play()
+			song.play();
 			return;
 		}
 
