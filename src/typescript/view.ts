@@ -11,14 +11,15 @@ import pauseImage from "../images/icons/pause.svg";
 import song from "../audio/Luna Rise, Part One.mp3";
 
 export default class View implements TaskView {
-	private count = new Audio(contagemRegressiva);
-	private beep = new Audio(audioBeep);
-	private audioPlayI = new Audio(audioPlay);
-	private audioStopI = new Audio(audioStop);
-	private audioSong = new Audio(song);
+	private count = new Audio(contagemRegressiva) as HTMLAudioElement;
+	private beep = new Audio(audioBeep) as HTMLAudioElement;
+	private audioPlayI = new Audio(audioPlay) as HTMLAudioElement;
+	private audioStopI = new Audio(audioStop) as HTMLAudioElement;
+	private audioSong = new Audio(song) as HTMLAudioElement;
 	private checkers = { green, white };
 	private intervalPlay: number = 0;
-	private elementImage = document.createElement("img");
+	private elementImage = document.createElement("img") as HTMLImageElement as HTMLImageElement;
+	private playTimer: boolean = true;
 
 	constructor() {}
 
@@ -211,8 +212,13 @@ export default class View implements TaskView {
 		return;
 	}
 
-	renderSetTimer(groupSet: HTMLElement, setTimer: HTMLButtonElement, timer: HTMLParagraphElement): void {
-		const setElements: HTMLButtonElement[] = Array.from(groupSet.children) as HTMLButtonElement[];
+	renderSetTimer(
+		groupSet: HTMLElement,
+		setTimer: HTMLButtonElement,
+		timer: HTMLParagraphElement,
+		btnPlayAndPause: HTMLButtonElement
+	): void {
+		const setElements = Array.from(groupSet.children) as HTMLButtonElement[];
 
 		const chose: string = setTimer.getAttribute("data-mode")!;
 		setTimer.classList.add("selected-mode");
@@ -240,18 +246,17 @@ export default class View implements TaskView {
 				break;
 		}
 
+		this.playTimer = false;
+
+		this.renderPlayTimer(timer, btnPlayAndPause, false);
 		return;
 	}
 
-	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement): void {
-		const attribute: string = timer.getAttribute("data-play")!;
-
-		const play: boolean = attribute === "true" ? true : false;
-		console.log(attribute);
-		console.log(play);
+	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement, playSongPause: boolean = true): void {
 		const mode: string = timer.getAttribute("data-mode")!;
 
-		if (play) {
+		if (this.playTimer) {
+			this.playTimer = false;
 			button.innerText = "Pausar";
 			this.elementImage.setAttribute("src", pauseImage);
 			button.prepend(this.elementImage);
@@ -276,9 +281,10 @@ export default class View implements TaskView {
 			}
 
 			let timeStamp: number = this.convertsTime(timer);
-			this.playOrPauseTimer(timer, button, true, timeStamp);
+			this.playOrPauseTimer(timer, button, true, playSongPause, timeStamp);
 		} else {
-			this.playOrPauseTimer(timer, button, false);
+			this.playTimer = true;
+			this.playOrPauseTimer(timer, button, false, playSongPause);
 		}
 	}
 
@@ -289,7 +295,7 @@ export default class View implements TaskView {
 		return Date.parse(dateTo);
 	}
 
-	private playOrPauseTimer(timer: HTMLParagraphElement, button: HTMLButtonElement, playOrPause: boolean, timeStamp?: number) {
+	private playOrPauseTimer(timer: HTMLParagraphElement, button: HTMLButtonElement, playOrPause: boolean, playSongPause: boolean, timeStamp?: number) {
 		if (playOrPause) {
 			this.intervalPlay = setInterval(() => {
 				if (timeStamp) {
@@ -316,11 +322,13 @@ export default class View implements TaskView {
 			timer.setAttribute("data-play", "true");
 			this.count.pause();
 			this.count.currentTime = 0;
-			this.audioStopI.play();
 			button.textContent = "Começar";
 			this.elementImage.setAttribute("src", playImage);
 			button.prepend(this.elementImage);
 			clearInterval(this.intervalPlay);
+			if (playSongPause) {
+				this.audioStopI.play();
+			}
 		}
 	}
 
@@ -334,7 +342,7 @@ export default class View implements TaskView {
 			this.audioSong.play();
 			return;
 		}
-		
+
 		this.audioSong.pause();
 		btnSong.classList.add("song-button-off");
 		circleElement.classList.add("song-circle-off");
