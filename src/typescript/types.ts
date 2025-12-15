@@ -26,7 +26,7 @@ interface TaskView {
 	renderCancelAddTask(liCancel: HTMLElement): void;
 	renderSetTimer(groupSet: HTMLElement, setTimer: HTMLButtonElement, timer: HTMLParagraphElement): void;
 	renderPlayTimer(timer: HTMLParagraphElement, button: HTMLButtonElement): void;
-	renderSong(): void;
+	renderSong(btnSong: HTMLButtonElement, circleElement: HTMLElement): void;
 }
 
 interface TaskController {

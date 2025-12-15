@@ -8,12 +8,14 @@ import audioPlay from "../audio/Press play.wav";
 import audioStop from "../audio/Press stop button.mp3";
 import playImage from "../images/icons/playArrow.svg";
 import pauseImage from "../images/icons/pause.svg";
+import song from "../audio/Luna Rise, Part One.mp3";
 
 export default class View implements TaskView {
 	private count = new Audio(contagemRegressiva);
 	private beep = new Audio(audioBeep);
 	private audioPlayI = new Audio(audioPlay);
 	private audioStopI = new Audio(audioStop);
+	private audioSong = new Audio(song);
 	private checkers = { green, white };
 	private intervalPlay: number = 0;
 	private elementImage = document.createElement("img");
@@ -322,15 +324,22 @@ export default class View implements TaskView {
 		}
 	}
 
-	renderSong(): void {
-		const song = new Audio("../audio.Luna Rise, Part One.mp3");
-		song.loop = true;
-		if (song.paused) {
-			song.play();
+	renderSong(btnSong: HTMLButtonElement, circleElement: HTMLElement): void {
+		this.audioSong.loop = true;
+		if (this.audioSong.paused) {
+			btnSong.classList.add("song-button-on");
+			circleElement.classList.add("song-circle-on");
+			btnSong.classList.remove("song-button-off");
+			circleElement.classList.remove("song-circle-off");
+			this.audioSong.play();
 			return;
 		}
-
-		song.pause();
+		
+		this.audioSong.pause();
+		btnSong.classList.add("song-button-off");
+		circleElement.classList.add("song-circle-off");
+		btnSong.classList.remove("song-button-on");
+		circleElement.classList.remove("song-circle-on");
 		return;
 	}
 }

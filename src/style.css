@@ -100,6 +100,18 @@
 @utility bg-complementary1 {
 	background-image: var(--bg-complementary1);
 }
+@utility song-button-on {
+	animation: var(--animate-on);
+}
+@utility song-button-off {
+	animation: var(--animate-off);
+}
+@utility song-circle-on {
+	animation: var(--animate-right);
+}
+@utility song-circle-off {
+	animation: var(--animate-left);
+}
 
 @layer base {
 	h1 {

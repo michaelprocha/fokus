@@ -83,6 +83,9 @@ class Controller implements TaskController {
 
 		const btn = document.querySelector("#play-pause") as HTMLButtonElement;
 		btn.addEventListener("click", () => this.handlePlayTimer(btn));
+
+		const btnSong = document.querySelector("#switch") as HTMLButtonElement;
+		btnSong.addEventListener("click", () => this.handleSong(btnSong));
 	}
 
 	handleOpenTaks = (): void => {
@@ -146,6 +149,11 @@ class Controller implements TaskController {
 	handlePlayTimer(btn: HTMLButtonElement): void {
 		const timer = document.querySelector("#timer") as HTMLParagraphElement;
 		this.view.renderPlayTimer(timer, btn);
+	}
+
+	handleSong = (btnSong: HTMLButtonElement) => {
+		const circleElement = btnSong.firstElementChild as HTMLElement;
+		this.view.renderSong(btnSong, circleElement);
 	}
 }
 
