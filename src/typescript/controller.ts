@@ -6,10 +6,7 @@ import View from "./view.js";
 class Controller implements TaskController {
 	private model = new Model();
 	private view = new View();
-	constructor() {
-		this.handleStartView();
-		this.setupEventListeners();
-	}
+	constructor() {}
 
 	handleStartView(): void {
 		const tasks: Task[] = this.model.getAllTasks();
@@ -41,31 +38,24 @@ class Controller implements TaskController {
 						} else if (attributeParentElement === "add" && attributeElement === "cancel") {
 							this.handelCancelAddTask(parentElement);
 						} else if (attributeParentElement === "edit" && attributeElement === "delete") {
-							console.log("delete");
 							this.handleDeleteTask(parentElement);
 						}
-					} else if (attributeGrandfatherElement){
+					} else if (attributeGrandfatherElement) {
 						if (attributeGrandfatherElement === "add" && attributeElement === "save") {
 							this.handleAddTask(grandfatherElement, list);
 						} else if (attributeGrandfatherElement === "add" && attributeElement === "cancel") {
 							this.handelCancelAddTask(grandfatherElement);
-						} else if(attributeGrandfatherElement === "edit" && attributeElement === "delete"){
-							console.log("delete com img");
+						} else if (attributeGrandfatherElement === "edit" && attributeElement === "delete") {
 							this.handleDeleteTask(grandfatherElement);
-						}else if(attributeGrandfatherElement === "edit" && attributeElement === "cancel"){
-							console.log("cancel");
+						} else if (attributeGrandfatherElement === "edit" && attributeElement === "cancel") {
 							this.handleCancelEditTask(grandfatherElement);
-						}else if(attributeGrandfatherElement === "edit" && attributeElement === "save"){
-							console.log("save");
+						} else if (attributeGrandfatherElement === "edit" && attributeElement === "save") {
 							this.handleSaveEditTask(grandfatherElement);
-
 						}
-					}else if(attributeGreatGrandfatherElement){
-						if(attributeGreatGrandfatherElement === "edit" && attributeElement === "cancel"){
-							console.log("cancel com img");
+					} else if (attributeGreatGrandfatherElement) {
+						if (attributeGreatGrandfatherElement === "edit" && attributeElement === "cancel") {
 							this.handleCancelEditTask(greatGrandfatherElement);
-						}else if(attributeGreatGrandfatherElement === "edit" && attributeElement === "save"){
-							console.log("save com img");
+						} else if (attributeGreatGrandfatherElement === "edit" && attributeElement === "save") {
 							this.handleSaveEditTask(greatGrandfatherElement);
 						}
 					}
@@ -73,7 +63,7 @@ class Controller implements TaskController {
 					const liElement = element.parentElement!.parentElement as HTMLLIElement;
 					this.handleOpenEditTask(liElement);
 				} else if (attributeElement === "complete") {
-					this.handleCompleteTaks(element);
+					this.handleCompleteTasks(element);
 				}
 			}
 		});
@@ -129,16 +119,16 @@ class Controller implements TaskController {
 		const content: string = liElement.querySelector("textarea")!.value;
 		this.model.editTask(id, content);
 		this.handleCancelEditTask(liElement);
-	}
+	};
 
 	handleDeleteTask = (liElement: HTMLElement): void => {
-		const id: number = parseInt(liElement.getAttribute("data-id")!)
+		const id: number = parseInt(liElement.getAttribute("data-id")!);
 		this.model.deleteTaks(id);
 		this.view.renderDeleteEditTask(liElement);
 		return;
-	}
+	};
 
-	handleCompleteTaks = (element: HTMLElement): void => {
+	handleCompleteTasks = (element: HTMLElement): void => {
 		const imgElement = element as HTMLImageElement;
 		const liElement = imgElement.parentElement!.parentElement!.parentElement as HTMLLIElement;
 		const pElement = imgElement.parentElement!.parentElement!.querySelector("p") as HTMLParagraphElement;
@@ -147,7 +137,7 @@ class Controller implements TaskController {
 		const completed: boolean = this.model.completedTask(id);
 		this.view.renderCompletedTask(btnElement, imgElement, completed, liElement, pElement);
 		return;
-	}
+	};
 
 	handlePlayTimer(btn: HTMLButtonElement): void {
 		const timer = document.querySelector("#timer") as HTMLParagraphElement;
@@ -159,19 +149,22 @@ class Controller implements TaskController {
 		const circleElement = btnSong.firstElementChild as HTMLElement;
 		this.view.renderSong(btnSong, circleElement);
 		return;
-	}
+	};
 
 	handelSetTimer = (e: Event, groupSetTimer: HTMLElement): void => {
-		console.log(e.target);
-		const clicked = e.target as HTMLElement
+		const clicked = e.target as HTMLElement;
 		if (clicked.getAttribute("data-mode")) {
+			const mainImage = document.querySelector("#main-image") as HTMLImageElement;
+			const body = document.querySelector("#page") as HTMLBodyElement;
 			const btnPlayAndPause = document.querySelector("#play-pause") as HTMLButtonElement;
 			const timer = document.querySelector("#timer") as HTMLParagraphElement;
 			const setTimer = clicked as HTMLButtonElement;
-			this.view.renderSetTimer(groupSetTimer, setTimer, timer, btnPlayAndPause);
+			this.view.renderSetTimer(groupSetTimer, setTimer, timer, btnPlayAndPause, mainImage, body);
 		}
 		return;
-	}
+	};
 }
 
 const controller = new Controller();
+controller.handleStartView();
+controller.setupEventListeners();

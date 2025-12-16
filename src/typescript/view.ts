@@ -9,6 +9,12 @@ import audioStop from "../audio/Press stop button.mp3";
 import playImage from "../images/icons/playArrow.svg";
 import pauseImage from "../images/icons/pause.svg";
 import song from "../audio/Luna Rise, Part One.mp3";
+import fokusImage from "../images/fokus.png";
+import longImage from "../images/longRest.png";
+import shortImage from "../images/shortRest.png";
+import saveImage from "../images/icons/save.svg";
+import deleteImage from "../images/icons/delete.svg";
+import cancelImage from "../images/icons/close.svg";
 
 export default class View implements TaskView {
 	private count = new Audio(contagemRegressiva) as HTMLAudioElement;
@@ -83,16 +89,16 @@ export default class View implements TaskView {
 	    			    		    <textarea class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName">${content}</textarea>
 		    			    	    <div class="flex justify-between items-center w-full">
 							        	<button data-button="delete" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Deletar tarefa">
-								        	<img data-button="delete" src="/images/icons/delete.svg" aria-hidden="true" />
+								        	<img data-button="delete" src="${deleteImage}" aria-hidden="true" />
 								        	deletar
 							         	</button>
 										<div class="flex gap-4 md:gap-12">
 			    		    	        	<button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar mudança na tarefa">
-	    		    		    	        	<img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
+	    		    		    	        	<img data-button="cancel" src="${cancelImage}" aria-hidden="true" />
 		    		    		            	Cancelar
     					                	</button>
     		    			            	<button data-button="save" class="button save cursor-pointer" type="button" aria-label="Salvar mudança na terefa">
-    			    			            	<img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
+    			    			            	<img data-button="save" src="${saveImage}" aria-hidden="true" />
 		    		    		            	Salvar
 			        			        	</button>
 				        		    	</div>
@@ -105,11 +111,11 @@ export default class View implements TaskView {
 							    <textarea class="resize-none h-30 w-full bg-complementary4 rounded-lg p-4 flex items-start" placeholder="No que você está trabalhando?" name="taskName"></textarea>
 						        <div class="flex justify-end items-center gap-4 w-full">
 								    <button data-button="cancel" class="button cancel cursor-pointer text-deep-blue" type="button" aria-label="Cancelar, não adicionar tarefa">
-									    <img data-button="cancel" src="/images/icons/close.svg" aria-hidden="true" />
+									    <img data-button="cancel" src="${cancelImage}" aria-hidden="true" />
 							    	    Cancelar
 							        </button>
 							        <button data-button="save" class="button save cursor-pointer" type="button" aria-label="Adicionar terefa">
-								        <img data-button="save" src="/images/icons/save.svg" aria-hidden="true" />
+								        <img data-button="save" src="${saveImage}" aria-hidden="true" />
 								        Salvar
 							        </button>
 						        </div>
@@ -216,7 +222,9 @@ export default class View implements TaskView {
 		groupSet: HTMLElement,
 		setTimer: HTMLButtonElement,
 		timer: HTMLParagraphElement,
-		btnPlayAndPause: HTMLButtonElement
+		btnPlayAndPause: HTMLButtonElement,
+		mainImage: HTMLImageElement,
+		body: HTMLBodyElement
 	): void {
 		const setElements = Array.from(groupSet.children) as HTMLButtonElement[];
 
@@ -233,16 +241,40 @@ export default class View implements TaskView {
 			case "focus":
 				timer.setAttribute("data-mode", "focus");
 				timer.textContent = "25:00";
+				mainImage.setAttribute("src", fokusImage);
+				body.classList.add("bg-focus-mode");
+				if (body.classList.contains("bg-short-rest")) {
+					body.classList.remove("bg-short-rest");
+				}
+				if (body.classList.contains("bg-long-rest")) {
+					body.classList.remove("bg-long-rest");
+				}
 				break;
 
 			case "short":
 				timer.setAttribute("data-mode", "short");
 				timer.textContent = "05:00";
+				mainImage.setAttribute("src", shortImage);
+				body.classList.add("bg-short-rest");
+				if (body.classList.contains("bg-focus-mode")) {
+					body.classList.remove("bg-focus-mode");
+				}
+				if (body.classList.contains("bg-long-rest")) {
+					body.classList.remove("bg-long-rest");
+				}
 				break;
 
 			default:
 				timer.setAttribute("data-mode", "long");
 				timer.textContent = "15:00";
+				mainImage.setAttribute("src", longImage);
+				body.classList.add("bg-long-rest");
+				if (body.classList.contains("bg-focus-mode")) {
+					body.classList.remove("bg-focus-mode");
+				}
+				if (body.classList.contains("bg-short-rest")) {
+					body.classList.remove("bg-short-rest");
+				}
 				break;
 		}
 
@@ -295,7 +327,13 @@ export default class View implements TaskView {
 		return Date.parse(dateTo);
 	}
 
-	private playOrPauseTimer(timer: HTMLParagraphElement, button: HTMLButtonElement, playOrPause: boolean, playSongPause: boolean, timeStamp?: number) {
+	private playOrPauseTimer(
+		timer: HTMLParagraphElement,
+		button: HTMLButtonElement,
+		playOrPause: boolean,
+		playSongPause: boolean,
+		timeStamp?: number
+	) {
 		if (playOrPause) {
 			this.intervalPlay = setInterval(() => {
 				if (timeStamp) {
